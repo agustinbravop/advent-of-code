@@ -7,10 +7,8 @@ import (
 	"strings"
 )
 
-var INPUT_FILE = "01-input.txt"
-
-func part_01() {
-	text, err := os.ReadFile(INPUT_FILE)
+func day_1_part_1() {
+	text, err := os.ReadFile("01-input.txt")
 	if err != nil {
 		fmt.Printf("Error reading input file: %v\n", err)
 		return
@@ -42,8 +40,8 @@ func part_01() {
 	fmt.Println(counter)
 }
 
-func part_02() {
-	text, err := os.ReadFile(INPUT_FILE)
+func day_1_part_2() {
+	text, err := os.ReadFile("01-input.txt")
 	if err != nil {
 		fmt.Printf("Error reading input file: %v\n", err)
 		return
@@ -77,8 +75,4 @@ func part_02() {
 	}
 
 	fmt.Println(counter)
-}
-
-func main() {
-	part_02()
 }
