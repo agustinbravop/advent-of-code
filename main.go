@@ -88,11 +88,11 @@ func (m model) View() string {
 func runFunction(choice string) {
 	switch choice {
 	case "Day 1 - Part 1":
-		runFile("01-secret-entrance.go", "day_1_part_1")
+		runFile("01-secret-entrance.go", "Day1Part1")
 	case "Day 1 - Part 2":
-		runFile("01-secret-entrance.go", "day_1_part_2")
+		runFile("01-secret-entrance.go", "Day1Part2")
 	case "Day 2 - Part 1":
-		runFile("02-gift-shop.go", "day_2_part_1")
+		runFile("02-gift-shop.go", "Day2Part1")
 	}
 }
 
@@ -116,12 +116,12 @@ func main() {
 		// Direct function execution mode
 		funcName := os.Args[1]
 		switch funcName {
-		case "day_1_part_1":
-			runFile("01-secret-entrance.go", "day_1_part_1")
-		case "day_1_part_2":
-			runFile("01-secret-entrance.go", "day_1_part_2")
-		case "day_2_part_1":
-			runFile("02-gift-shop.go", "day_2_part_1")
+		case "Day1Part1":
+			runFile("01-secret-entrance.go", "Day1Part1")
+		case "Day1Part2":
+			runFile("01-secret-entrance.go", "Day1Part2")
+		case "Day2Part1":
+			runFile("02-gift-shop.go", "Day2Part1")
 		default:
 			fmt.Printf("Unknown function: %s\n", funcName)
 		}
