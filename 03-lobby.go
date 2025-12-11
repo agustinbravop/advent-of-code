@@ -7,11 +7,10 @@ import (
 	"strings"
 )
 
-func Day3Part1() {
+func Day3Part1() string {
 	text, err := os.ReadFile("03-input.txt")
 	if err != nil {
-		fmt.Printf("Error reading input file: %v\n", err)
-		return
+		return fmt.Sprintf("Error reading input file: %v\n", err)
 	}
 
 	joltage := 0
@@ -39,14 +38,13 @@ func Day3Part1() {
 		joltage += numbers[firstDigitIndex]*10 + secondDigit
 	}
 
-	fmt.Println(joltage)
+	return fmt.Sprintf("%d", joltage)
 }
 
-func Day3Part2() {
+func Day3Part2() string {
 	text, err := os.ReadFile("03-input.txt")
 	if err != nil {
-		fmt.Printf("Error reading input file: %v\n", err)
-		return
+		return fmt.Sprintf("Error reading input file: %v\n", err)
 	}
 	joltage := 0
 	for bank := range strings.SplitSeq(string(text), "\n") {
@@ -76,5 +74,5 @@ func Day3Part2() {
 		}
 	}
 
-	fmt.Println(joltage)
+	return fmt.Sprintf("%d", joltage)
 }

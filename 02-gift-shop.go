@@ -18,11 +18,10 @@ func isInvalidPart1(id string) bool {
 	return firstHalf == secondHalf
 }
 
-func Day2Part1() {
+func Day2Part1() string {
 	text, err := os.ReadFile("02-input.txt")
 	if err != nil {
-		fmt.Printf("Error reading input file: %v\n", err)
-		return
+		return fmt.Sprintf("Error reading input file: %v\n", err)
 	}
 
 	invalid_id_sum := 0
@@ -48,7 +47,7 @@ func Day2Part1() {
 		}
 	}
 
-	fmt.Println(invalid_id_sum)
+	return fmt.Sprintf("%d", invalid_id_sum)
 }
 
 // factors returns the list of factors of a given number.
@@ -81,11 +80,10 @@ func isInvalidPart2(id string) bool {
 	return false
 }
 
-func Day2Part2() {
+func Day2Part2() string {
 	text, err := os.ReadFile("02-input.txt")
 	if err != nil {
-		fmt.Printf("Error reading input file: %v\n", err)
-		return
+		return fmt.Sprintf("Error reading input file: %v\n", err)
 	}
 
 	invalid_id_sum := 0
@@ -111,5 +109,5 @@ func Day2Part2() {
 		}
 	}
 
-	fmt.Println(invalid_id_sum)
+	return fmt.Sprintf("%d", invalid_id_sum)
 }

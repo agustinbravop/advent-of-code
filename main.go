@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"os/exec"
-	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -13,6 +11,7 @@ import (
 type model struct {
 	cursor  int
 	choices []string
+	output  string
 }
 
 var (
@@ -28,25 +27,26 @@ var (
 			Foreground(lipgloss.Color("241")).
 			Faint(true)
 
-	dayMap = map[string]map[string]string{
-		"1": {"1": "Day1Part1", "2": "Day1Part2"},
-		"2": {"1": "Day2Part1", "2": "Day2Part2"},
-		"3": {"1": "Day3Part1", "2": "Day3Part2"},
-		"4": {"1": "Day4Part1", "2": "Day4Part2"},
-		"5": {"1": "Day5Part1", "2": "Day5Part2"},
-	}
+	outputStyle = lipgloss.NewStyle().
+			Border(lipgloss.RoundedBorder()).
+			BorderForeground(lipgloss.Color("62")).
+			Padding(1, 2).
+			Foreground(lipgloss.Color("255")).
+			Background(lipgloss.Color("236")).
+			Width(80)
 
-	fileMap = map[string]string{
-		"Day1Part1": "01-secret-entrance.go",
-		"Day1Part2": "01-secret-entrance.go",
-		"Day2Part1": "02-gift-shop.go",
-		"Day2Part2": "02-gift-shop.go",
-		"Day3Part1": "03-lobby.go",
-		"Day3Part2": "03-lobby.go",
-		"Day4Part1": "04-printing-department.go",
-		"Day4Part2": "04-printing-department.go",
-		"Day5Part1": "05-cafeteria.go",
-		"Day5Part2": "05-cafeteria.go",
+	outputTitleStyle = lipgloss.NewStyle().
+				Foreground(lipgloss.Color("220")).
+				Bold(true).
+				MarginBottom(1)
+
+	dayMap = map[string]map[string]func() string{
+		"1": {"1": Day1Part1, "2": Day1Part2},
+		"2": {"1": Day2Part1, "2": Day2Part2},
+		"3": {"1": Day3Part1, "2": Day3Part2},
+		"4": {"1": Day4Part1, "2": Day4Part2},
+		"5": {"1": Day5Part1, "2": Day5Part2},
+		"6": {"1": Day6Part1},
 	}
 )
 
@@ -57,7 +57,7 @@ func initialModel() model {
 			choices = append(choices, fmt.Sprintf("Day %s - Part %s", day, part))
 		}
 	}
-	return model{choices: choices}
+	return model{choices: choices, output: ""}
 }
 
 func (m model) Init() tea.Cmd {
@@ -68,7 +68,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
-		case "ctrl+c", "q":
+		case "ctrl+c":
+			return m, tea.Quit
+		case "q":
+			if m.output != "" {
+				fmt.Println()
+			}
 			return m, tea.Quit
 		case "up", "k":
 			if m.cursor > 0 {
@@ -79,8 +84,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.cursor++
 			}
 		case "enter", " ":
-			runFunction(m.choices[m.cursor])
-			return m, tea.Quit
+			output := runFunction(m.choices[m.cursor])
+			m.output = output
+			return m, nil
 		}
 	}
 	return m, nil
@@ -103,49 +109,42 @@ func (m model) View() string {
 	}
 
 	s += "\n" + helpStyle.Render("↑/↓: Navigate  Enter: Run  q: Quit")
+
+	if m.output != "" {
+		s += "\n\nOutput: " + m.output
+	}
+
 	return s
 }
 
-func runFunction(choice string) {
+func runFunction(choice string) string {
 	var day, part int
 	fmt.Sscanf(choice, "Day %d - Part %d", &day, &part)
 
 	dayStr := fmt.Sprintf("%d", day)
 	partStr := fmt.Sprintf("%d", part)
 
-	if funcName, ok := dayMap[dayStr][partStr]; ok {
-		runFile(fileMap[funcName], funcName)
+	if function, ok := dayMap[dayStr][partStr]; ok {
+		return function()
 	}
-}
-
-func runFile(filename, funcName string) {
-	content, _ := os.ReadFile(filename)
-	code := string(content) + fmt.Sprintf("\n\nfunc main() { %s() }", funcName)
-
-	tempFile := "temp.go"
-	os.WriteFile(tempFile, []byte(code), 0644)
-	defer os.Remove(tempFile)
-
-	cmd := exec.Command("go", "run", tempFile)
-	output, _ := cmd.CombinedOutput()
-
-	fmt.Printf("\nOutput: %s\n", strings.TrimSpace(string(output)))
+	return "Error: Function not found"
 }
 
 func main() {
 	if len(os.Args) > 1 {
 		if len(os.Args) < 3 {
-			fmt.Printf("Missing arguments. Use: go run main.go <day> <part>\n")
+			fmt.Printf("Missing arguments. Use: go run . <day> <part>\n")
 			os.Exit(1)
 		}
 
 		day := os.Args[1]
 		part := os.Args[2]
 
-		if funcName, ok := dayMap[day][part]; ok {
-			runFile(fileMap[funcName], funcName)
+		if function, ok := dayMap[day][part]; ok {
+			result := function()
+			fmt.Println("Output:", result)
 		} else {
-			fmt.Printf("Invalid day or part. Use: go run main.go <day> <part>\n")
+			fmt.Printf("Invalid day or part. Use: go run . <day> <part>\n")
 			os.Exit(1)
 		}
 	} else {

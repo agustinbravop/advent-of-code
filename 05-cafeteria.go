@@ -20,11 +20,10 @@ func isIngredientFresh(id int, ranges [][]int) bool {
 	return false
 }
 
-func Day5Part1() {
+func Day5Part1() string {
 	text, err := os.ReadFile("05-input.txt")
 	if err != nil {
-		fmt.Printf("Error reading input file: %v\n", err)
-		return
+		return fmt.Sprintf("Error reading input file: %v\n", err)
 	}
 
 	// We split the file first and then process ingredients line by line.
@@ -49,14 +48,13 @@ func Day5Part1() {
 		}
 	}
 
-	fmt.Println(freshIngredientCount)
+	return fmt.Sprintf("%d", freshIngredientCount)
 }
 
-func Day5Part2() {
+func Day5Part2() string {
 	text, err := os.ReadFile("05-input.txt")
 	if err != nil {
-		fmt.Printf("Error reading input file: %v\n", err)
-		return
+		return fmt.Sprintf("Error reading input file: %v\n", err)
 	}
 
 	// We split the file and only keep the first half with the ID ranges.
@@ -104,5 +102,5 @@ func Day5Part2() {
 		sum += r[1] - r[0] + 1
 	}
 
-	fmt.Println(sum)
+	return fmt.Sprintf("%d", sum)
 }

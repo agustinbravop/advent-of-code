@@ -6,11 +6,10 @@ import (
 	"strings"
 )
 
-func Day4Part1() {
+func Day4Part1() string {
 	text, err := os.ReadFile("04-input.txt")
 	if err != nil {
-		fmt.Printf("Error reading input file: %v\n", err)
-		return
+		return fmt.Sprintf("Error reading input file: %v\n", err)
 	}
 
 	accessiblePaperRolls := 0
@@ -52,7 +51,7 @@ func Day4Part1() {
 		}
 	}
 
-	fmt.Println(accessiblePaperRolls)
+	return fmt.Sprintf("%d", accessiblePaperRolls)
 }
 
 // findAccessiblePaperRolls finds all accessible paper rolls in a given grid.
@@ -92,11 +91,10 @@ func findAccessiblePaperRolls(lines []string) [][]int {
 	return accessiblePaperRolls
 }
 
-func Day4Part2() {
+func Day4Part2() string {
 	text, err := os.ReadFile("04-input.txt")
 	if err != nil {
-		fmt.Printf("Error reading input file: %v\n", err)
-		return
+		return fmt.Sprintf("Error reading input file: %v\n", err)
 	}
 
 	// Append a fake line filled with dots at the start and end of the diagram.
@@ -118,5 +116,5 @@ func Day4Part2() {
 		accessiblePaperRollsLocations = findAccessiblePaperRolls(lines)
 	}
 
-	fmt.Println(removedPaperRolls)
+	return fmt.Sprintf("%d", removedPaperRolls)
 }

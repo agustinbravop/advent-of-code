@@ -7,11 +7,10 @@ import (
 	"strings"
 )
 
-func Day1Part1() {
+func Day1Part1() string {
 	text, err := os.ReadFile("01-input.txt")
 	if err != nil {
-		fmt.Printf("Error reading input file: %v\n", err)
-		return
+		return fmt.Sprintf("Error reading input file: %v\n", err)
 	}
 
 	counter := 0
@@ -37,14 +36,13 @@ func Day1Part1() {
 		}
 	}
 
-	fmt.Println(counter)
+	return fmt.Sprintf("%d", counter)
 }
 
-func Day1Part2() {
+func Day1Part2() string {
 	text, err := os.ReadFile("01-input.txt")
 	if err != nil {
-		fmt.Printf("Error reading input file: %v\n", err)
-		return
+		return fmt.Sprintf("Error reading input file: %v\n", err)
 	}
 
 	counter := 0
@@ -74,5 +72,5 @@ func Day1Part2() {
 		}
 	}
 
-	fmt.Println(counter)
+	return fmt.Sprintf("%d", counter)
 }
