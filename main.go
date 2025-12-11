@@ -39,6 +39,7 @@ func initialModel() model {
 			"Day 3 - Part 1",
 			"Day 3 - Part 2",
 			"Day 4 - Part 1",
+			"Day 4 - Part 2",
 		},
 	}
 }
@@ -105,6 +106,8 @@ func runFunction(choice string) {
 		runFile("03-lobby.go", "Day3Part2")
 	case "Day 4 - Part 1":
 		runFile("04-printing-department.go", "Day4Part1")
+	case "Day 4 - Part 2":
+		runFile("04-printing-department.go", "Day4Part2")
 	}
 }
 
@@ -142,6 +145,8 @@ func main() {
 			runFile("03-lobby.go", "Day3Part2")
 		case "Day4Part1":
 			runFile("04-printing-department.go", "Day4Part1")
+		case "Day4Part2":
+			runFile("04-printing-department.go", "Day4Part2")
 		default:
 			fmt.Printf("Unknown function: %s\n", funcName)
 		}
