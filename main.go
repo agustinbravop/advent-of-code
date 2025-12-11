@@ -27,21 +27,34 @@ var (
 	helpStyle = lipgloss.NewStyle().
 			Foreground(lipgloss.Color("241")).
 			Faint(true)
+
+	dayMap = map[string]map[string]string{
+		"1": {"1": "Day1Part1", "2": "Day1Part2"},
+		"2": {"1": "Day2Part1", "2": "Day2Part2"},
+		"3": {"1": "Day3Part1", "2": "Day3Part2"},
+		"4": {"1": "Day4Part1", "2": "Day4Part2"},
+	}
+
+	fileMap = map[string]string{
+		"Day1Part1": "01-secret-entrance.go",
+		"Day1Part2": "01-secret-entrance.go",
+		"Day2Part1": "02-gift-shop.go",
+		"Day2Part2": "02-gift-shop.go",
+		"Day3Part1": "03-lobby.go",
+		"Day3Part2": "03-lobby.go",
+		"Day4Part1": "04-printing-department.go",
+		"Day4Part2": "04-printing-department.go",
+	}
 )
 
 func initialModel() model {
-	return model{
-		choices: []string{
-			"Day 1 - Part 1",
-			"Day 1 - Part 2",
-			"Day 2 - Part 1",
-			"Day 2 - Part 2",
-			"Day 3 - Part 1",
-			"Day 3 - Part 2",
-			"Day 4 - Part 1",
-			"Day 4 - Part 2",
-		},
+	choices := make([]string, 0)
+	for day := range dayMap {
+		for part := range dayMap[day] {
+			choices = append(choices, fmt.Sprintf("Day %s - Part %s", day, part))
+		}
 	}
+	return model{choices: choices}
 }
 
 func (m model) Init() tea.Cmd {
@@ -91,23 +104,14 @@ func (m model) View() string {
 }
 
 func runFunction(choice string) {
-	switch choice {
-	case "Day 1 - Part 1":
-		runFile("01-secret-entrance.go", "Day1Part1")
-	case "Day 1 - Part 2":
-		runFile("01-secret-entrance.go", "Day1Part2")
-	case "Day 2 - Part 1":
-		runFile("02-gift-shop.go", "Day2Part1")
-	case "Day 2 - Part 2":
-		runFile("02-gift-shop.go", "Day2Part2")
-	case "Day 3 - Part 1":
-		runFile("03-lobby.go", "Day3Part1")
-	case "Day 3 - Part 2":
-		runFile("03-lobby.go", "Day3Part2")
-	case "Day 4 - Part 1":
-		runFile("04-printing-department.go", "Day4Part1")
-	case "Day 4 - Part 2":
-		runFile("04-printing-department.go", "Day4Part2")
+	var day, part int
+	fmt.Sscanf(choice, "Day %d - Part %d", &day, &part)
+
+	dayStr := fmt.Sprintf("%d", day)
+	partStr := fmt.Sprintf("%d", part)
+
+	if funcName, ok := dayMap[dayStr][partStr]; ok {
+		runFile(fileMap[funcName], funcName)
 	}
 }
 
@@ -122,41 +126,30 @@ func runFile(filename, funcName string) {
 	cmd := exec.Command("go", "run", tempFile)
 	output, _ := cmd.CombinedOutput()
 
-	// Print output with spacing to avoid collision
 	fmt.Printf("\nOutput: %s\n", strings.TrimSpace(string(output)))
 }
 
 func main() {
 	if len(os.Args) > 1 {
-		// Direct function execution mode
-		funcName := os.Args[1]
-		switch funcName {
-		case "Day1Part1":
-			runFile("01-secret-entrance.go", "Day1Part1")
-		case "Day1Part2":
-			runFile("01-secret-entrance.go", "Day1Part2")
-		case "Day2Part1":
-			runFile("02-gift-shop.go", "Day2Part1")
-		case "Day2Part2":
-			runFile("02-gift-shop.go", "Day2Part2")
-		case "Day3Part1":
-			runFile("03-lobby.go", "Day3Part1")
-		case "Day3Part2":
-			runFile("03-lobby.go", "Day3Part2")
-		case "Day4Part1":
-			runFile("04-printing-department.go", "Day4Part1")
-		case "Day4Part2":
-			runFile("04-printing-department.go", "Day4Part2")
-		default:
-			fmt.Printf("Unknown function: %s\n", funcName)
+		if len(os.Args) < 3 {
+			fmt.Printf("Missing arguments. Use: go run main.go <day> <part>\n")
+			os.Exit(1)
 		}
-		return
-	}
 
-	// Interactive menu mode if no argument was provided
-	p := tea.NewProgram(initialModel())
-	if _, err := p.Run(); err != nil {
-		fmt.Printf("Error: %v\n", err)
-		os.Exit(1)
+		day := os.Args[1]
+		part := os.Args[2]
+
+		if funcName, ok := dayMap[day][part]; ok {
+			runFile(fileMap[funcName], funcName)
+		} else {
+			fmt.Printf("Invalid day or part. Use: go run main.go <day> <part>\n")
+			os.Exit(1)
+		}
+	} else {
+		p := tea.NewProgram(initialModel())
+		if _, err := p.Run(); err != nil {
+			fmt.Printf("Error: %v\n", err)
+			os.Exit(1)
+		}
 	}
 }

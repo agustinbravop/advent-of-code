@@ -120,7 +120,3 @@ func Day4Part2() {
 
 	fmt.Println(removedPaperRolls)
 }
-
-func main() {
-	Day4Part2()
-}
