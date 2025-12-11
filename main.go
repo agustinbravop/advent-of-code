@@ -33,7 +33,7 @@ var (
 		"2": {"1": "Day2Part1", "2": "Day2Part2"},
 		"3": {"1": "Day3Part1", "2": "Day3Part2"},
 		"4": {"1": "Day4Part1", "2": "Day4Part2"},
-		"5": {"1": "Day5Part1"},
+		"5": {"1": "Day5Part1", "2": "Day5Part2"},
 	}
 
 	fileMap = map[string]string{
@@ -46,6 +46,7 @@ var (
 		"Day4Part1": "04-printing-department.go",
 		"Day4Part2": "04-printing-department.go",
 		"Day5Part1": "05-cafeteria.go",
+		"Day5Part2": "05-cafeteria.go",
 	}
 )
 
