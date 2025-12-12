@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"maps"
 	"os"
+	"slices"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -52,11 +54,12 @@ var (
 
 func initialModel() model {
 	choices := make([]string, 0)
-	for day := range dayMap {
+	for _, day := range slices.Sorted(maps.Keys(dayMap)) {
 		for part := range dayMap[day] {
 			choices = append(choices, fmt.Sprintf("Day %s - Part %s", day, part))
 		}
 	}
+	slices.Sort(choices)
 	return model{choices: choices, output: ""}
 }
 
@@ -85,8 +88,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		case "enter", " ":
 			output := runFunction(m.choices[m.cursor])
-			m.output = output
-			return m, nil
+			fmt.Println("\n\nOutput: " + output)
+			return m, tea.Quit
 		}
 	}
 	return m, nil
