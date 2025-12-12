@@ -29,26 +29,13 @@ var (
 			Foreground(lipgloss.Color("241")).
 			Faint(true)
 
-	outputStyle = lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("62")).
-			Padding(1, 2).
-			Foreground(lipgloss.Color("255")).
-			Background(lipgloss.Color("236")).
-			Width(80)
-
-	outputTitleStyle = lipgloss.NewStyle().
-				Foreground(lipgloss.Color("220")).
-				Bold(true).
-				MarginBottom(1)
-
 	dayMap = map[string]map[string]func() string{
 		"1": {"1": Day1Part1, "2": Day1Part2},
 		"2": {"1": Day2Part1, "2": Day2Part2},
 		"3": {"1": Day3Part1, "2": Day3Part2},
 		"4": {"1": Day4Part1, "2": Day4Part2},
 		"5": {"1": Day5Part1, "2": Day5Part2},
-		"6": {"1": Day6Part1},
+		"6": {"1": Day6Part1, "2": Day6Part2},
 	}
 )
 
