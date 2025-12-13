@@ -30,15 +30,16 @@ var (
 			Faint(true)
 
 	dayMap = map[string]map[string]func() string{
-		"1": {"1": Day1Part1, "2": Day1Part2},
-		"2": {"1": Day2Part1, "2": Day2Part2},
-		"3": {"1": Day3Part1, "2": Day3Part2},
-		"4": {"1": Day4Part1, "2": Day4Part2},
-		"5": {"1": Day5Part1, "2": Day5Part2},
-		"6": {"1": Day6Part1, "2": Day6Part2},
-		"7": {"1": Day7Part1, "2": Day7Part2},
-		"8": {"1": Day8Part1, "2": Day8Part2},
-		"9": {"1": Day9Part1, "2": Day9Part2},
+		"1":  {"1": Day1Part1, "2": Day1Part2},
+		"2":  {"1": Day2Part1, "2": Day2Part2},
+		"3":  {"1": Day3Part1, "2": Day3Part2},
+		"4":  {"1": Day4Part1, "2": Day4Part2},
+		"5":  {"1": Day5Part1, "2": Day5Part2},
+		"6":  {"1": Day6Part1, "2": Day6Part2},
+		"7":  {"1": Day7Part1, "2": Day7Part2},
+		"8":  {"1": Day8Part1, "2": Day8Part2},
+		"9":  {"1": Day9Part1, "2": Day9Part2},
+		"10": {"1": Day10Part1},
 	}
 )
 
