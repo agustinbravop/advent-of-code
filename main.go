@@ -5,6 +5,7 @@ import (
 	"maps"
 	"os"
 	"slices"
+	"strconv"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -29,30 +30,29 @@ var (
 			Foreground(lipgloss.Color("241")).
 			Faint(true)
 
-	dayMap = map[string]map[string]func() string{
-		"1":  {"1": Day1Part1, "2": Day1Part2},
-		"2":  {"1": Day2Part1, "2": Day2Part2},
-		"3":  {"1": Day3Part1, "2": Day3Part2},
-		"4":  {"1": Day4Part1, "2": Day4Part2},
-		"5":  {"1": Day5Part1, "2": Day5Part2},
-		"6":  {"1": Day6Part1, "2": Day6Part2},
-		"7":  {"1": Day7Part1, "2": Day7Part2},
-		"8":  {"1": Day8Part1, "2": Day8Part2},
-		"9":  {"1": Day9Part1, "2": Day9Part2},
-		"10": {"1": Day10Part1, "2": Day10Part2},
-		"11": {"1": Day11Part1, "2": Day11Part2},
-		"12": {"1": Day12Part1},
+	dayMap = map[int]map[int]func() string{
+		1:  {1: Day1Part1, 2: Day1Part2},
+		2:  {1: Day2Part1, 2: Day2Part2},
+		3:  {1: Day3Part1, 2: Day3Part2},
+		4:  {1: Day4Part1, 2: Day4Part2},
+		5:  {1: Day5Part1, 2: Day5Part2},
+		6:  {1: Day6Part1, 2: Day6Part2},
+		7:  {1: Day7Part1, 2: Day7Part2},
+		8:  {1: Day8Part1, 2: Day8Part2},
+		9:  {1: Day9Part1, 2: Day9Part2},
+		10: {1: Day10Part1, 2: Day10Part2},
+		11: {1: Day11Part1, 2: Day11Part2},
+		12: {1: Day12Part1},
 	}
 )
 
 func initialModel() model {
 	choices := make([]string, 0)
 	for _, day := range slices.Sorted(maps.Keys(dayMap)) {
-		for part := range dayMap[day] {
-			choices = append(choices, fmt.Sprintf("Day %s - Part %s", day, part))
+		for _, part := range slices.Sorted(maps.Keys(dayMap[day])) {
+			choices = append(choices, fmt.Sprintf("Day %d - Part %d", day, part))
 		}
 	}
-	slices.Sort(choices)
 	return model{choices: choices, output: ""}
 }
 
@@ -117,10 +117,7 @@ func runFunction(choice string) string {
 	var day, part int
 	fmt.Sscanf(choice, "Day %d - Part %d", &day, &part)
 
-	dayStr := fmt.Sprintf("%d", day)
-	partStr := fmt.Sprintf("%d", part)
-
-	if function, ok := dayMap[dayStr][partStr]; ok {
+	if function, ok := dayMap[day][part]; ok {
 		return function()
 	}
 	return "Error: Function not found"
@@ -133,8 +130,16 @@ func main() {
 			os.Exit(1)
 		}
 
-		day := os.Args[1]
-		part := os.Args[2]
+		day, err := strconv.Atoi(os.Args[1])
+		if err != nil {
+			fmt.Printf("Invalid day. Use: go run . <day> <part>\n")
+			os.Exit(1)
+		}
+		part, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Printf("Invalid part. Use: go run . <day> <part>\n")
+			os.Exit(1)
+		}
 
 		if function, ok := dayMap[day][part]; ok {
 			result := function()
