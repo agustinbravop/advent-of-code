@@ -39,7 +39,7 @@ var (
 		"7":  {"1": Day7Part1, "2": Day7Part2},
 		"8":  {"1": Day8Part1, "2": Day8Part2},
 		"9":  {"1": Day9Part1, "2": Day9Part2},
-		"10": {"1": Day10Part1},
+		"10": {"1": Day10Part1, "2": Day10Part2},
 		"11": {"1": Day11Part1, "2": Day11Part2},
 		"12": {"1": Day12Part1},
 	}
